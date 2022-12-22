@@ -44,12 +44,6 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  child: Text(
-                    AppTexts.country,
-                    style: AppTextStyles.whiteColor30,
-                  ),
-                ),
                 FutureBuilder(
                   future: ServiceWeather.getWeather(),
                   builder: (context, AsyncSnapshot<WeatherModel> snapshot) {
@@ -64,17 +58,34 @@ class _HomePageState extends State<HomePage> {
                     } else {
                       var data = snapshot.data;
 
-                      return Column(
-                        children: [
-                          Text(
-                            data!.name! + AppTexts.osh,
-                            style: AppTextStyles.whiteColor30,
-                          ),
-                          Text(
-                            data.main!.temp.toStringAsFixed(1),
-                            style: AppTextStyles.whiteColor30,
-                          ),
-                        ],
+                      return Center(
+                        child: Column(
+                          children: [
+                            const Text(
+                              AppTexts.country,
+                              style: AppTextStyles.whiteColor30,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                vertical: size.height * 0.02,
+                              ),
+                              child: SizedBox(
+                                child: Image.asset(
+                                  'assets/images/${data!.weather![0].icon}.png',
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              data.name! + AppTexts.osh,
+                              style: AppTextStyles.whiteColor30,
+                            ),
+                            Text(
+                              '${data.main!.temp.toStringAsFixed(0)}℃',
+                              style: AppTextStyles.whiteColor30,
+                            ),
+                          ],
+                        ),
                       );
                     }
                   },
