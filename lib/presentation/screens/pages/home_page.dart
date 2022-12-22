@@ -14,6 +14,8 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+TextEditingController _controller = TextEditingController();
+
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,12 @@ class _HomePageState extends State<HomePage> {
           appBar: AppBar(
             elevation: 0.0,
             backgroundColor: AppColors.tranColor,
-            leading: const Icon(Icons.menu),
+            leading: InkWell(
+              onTap: () {
+                setState(() {});
+              },
+              child: const Icon(Icons.menu),
+            ),
             centerTitle: true,
             title: const ChipTextWidget(
               titleText: AppTexts.weather_app,
@@ -45,7 +52,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 FutureBuilder(
-                  future: ServiceWeather.getWeather(),
+                  future: ServiceWeather().getWeather(),
                   builder: (context, AsyncSnapshot<WeatherModel> snapshot) {
                     if (!snapshot.hasData) {
                       return const Center(
@@ -57,10 +64,22 @@ class _HomePageState extends State<HomePage> {
                       );
                     } else {
                       var data = snapshot.data;
-
+                      ServiceWeather(city: _controller.text);
                       return Center(
                         child: Column(
                           children: [
+                            TextField(
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                hintText: 'Search',
+                                hintStyle: const TextStyle(
+                                  color: AppColors.whiteColor,
+                                ),
+                              ),
+                              controller: _controller,
+                            ),
                             const Text(
                               AppTexts.country,
                               style: AppTextStyles.whiteColor30,
@@ -77,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             Text(
-                              data.name! + AppTexts.osh,
+                              data.name! + AppTexts.city,
                               style: AppTextStyles.whiteColor30,
                             ),
                             Text(
