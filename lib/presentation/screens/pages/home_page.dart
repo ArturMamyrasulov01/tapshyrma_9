@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:tapshyrma_9/app/constants/app_colors/app_colors.dart';
 import 'package:tapshyrma_9/app/constants/app_text_style/app_text_style.dart';
@@ -8,6 +6,7 @@ import 'package:tapshyrma_9/data/service/service_weather.dart';
 
 import '../../../data/model/model_weather.dart';
 import '../widgets/chip_text_widget.dart';
+import '../widgets/input_text_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,9 +15,14 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-TextEditingController _controller = TextEditingController();
-
 class _HomePageState extends State<HomePage> {
+  void fSearch() {
+    setState;
+    (() {
+      ServiceWeather().city = controller.text;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -38,10 +42,7 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: AppColors.tranColor,
             leading: InkWell(
               onTap: () {
-                setState(() async {
-                  log(_controller.text);
-                  ServiceWeather(city: _controller.text);
-                });
+                fSearch();
               },
               child: const Icon(Icons.menu),
             ),
@@ -71,19 +72,11 @@ class _HomePageState extends State<HomePage> {
                       );
                     } else {
                       var data = snapshot.data;
-                      ServiceWeather(city: _controller.text);
+
                       return Center(
                         child: Column(
                           children: [
-                            TextField(
-                              decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                  ),
-                                  hintText: 'Search',
-                                  hintStyle: AppTextStyles.whiteColor30),
-                              controller: _controller,
-                            ),
+                            const InputTextWidget(),
                             Text(
                               AppTexts.country,
                               style: AppTextStyles.whiteColor30,
@@ -92,11 +85,9 @@ class _HomePageState extends State<HomePage> {
                               padding: EdgeInsets.symmetric(
                                 vertical: size.height * 0.02,
                               ),
-                              child: SizedBox(
-                                child: Image.asset(
-                                  'assets/images/${data!.weather![0].icon}.png',
-                                  fit: BoxFit.cover,
-                                ),
+                              child: Image.asset(
+                                'assets/images/${data!.weather![0].icon}.png',
+                                fit: BoxFit.cover,
                               ),
                             ),
                             Text(
