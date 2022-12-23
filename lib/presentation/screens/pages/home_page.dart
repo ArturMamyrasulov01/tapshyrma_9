@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:tapshyrma_9/app/constants/app_colors/app_colors.dart';
 import 'package:tapshyrma_9/app/constants/app_text_style/app_text_style.dart';
@@ -36,7 +38,10 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: AppColors.tranColor,
             leading: InkWell(
               onTap: () {
-                setState(() {});
+                setState(() async {
+                  log(_controller.text);
+                  ServiceWeather(city: _controller.text);
+                });
               },
               child: const Icon(Icons.menu),
             ),
@@ -46,7 +51,9 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           body: Padding(
-            padding: EdgeInsets.symmetric(horizontal: size.width * 0.08),
+            padding: EdgeInsets.symmetric(
+              horizontal: size.width * 0.08,
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,17 +77,14 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             TextField(
                               decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                ),
-                                hintText: 'Search',
-                                hintStyle: const TextStyle(
-                                  color: AppColors.whiteColor,
-                                ),
-                              ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  hintText: 'Search',
+                                  hintStyle: AppTextStyles.whiteColor30),
                               controller: _controller,
                             ),
-                            const Text(
+                            Text(
                               AppTexts.country,
                               style: AppTextStyles.whiteColor30,
                             ),
