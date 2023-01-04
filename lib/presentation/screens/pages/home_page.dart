@@ -6,7 +6,6 @@ import 'package:tapshyrma_9/data/service/service_weather.dart';
 
 import '../../../data/model/model_weather.dart';
 import '../widgets/chip_text_widget.dart';
-import '../widgets/input_text_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,16 +14,12 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  void fSearch() {
-    setState;
-    (() {
-      ServiceWeather().city = controller.text;
-    });
-  }
+final isController = TextEditingController();
 
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    var text = ServiceWeather.getWeather(cityName: isController.text);
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Container(
@@ -41,8 +36,9 @@ class _HomePageState extends State<HomePage> {
             elevation: 0.0,
             backgroundColor: AppColors.tranColor,
             leading: InkWell(
-              onTap: () {
-                fSearch();
+              onTap: () async {
+                text;
+                setState(() {});
               },
               child: const Icon(Icons.menu),
             ),
@@ -59,8 +55,18 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    hintText: AppTexts.search,
+                    hintStyle: AppTextStyles.whiteColor30,
+                  ),
+                  controller: isController,
+                ),
                 FutureBuilder(
-                  future: ServiceWeather().getWeather(),
+                  future: text,
                   builder: (context, AsyncSnapshot<WeatherModel> snapshot) {
                     if (!snapshot.hasData) {
                       return const Center(
@@ -76,7 +82,6 @@ class _HomePageState extends State<HomePage> {
                       return Center(
                         child: Column(
                           children: [
-                            const InputTextWidget(),
                             Text(
                               AppTexts.country,
                               style: AppTextStyles.whiteColor30,

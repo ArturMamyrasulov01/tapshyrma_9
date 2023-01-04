@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tapshyrma_9/app/constants/app_texts/app_texts.dart';
 
 import '../../../app/constants/app_text_style/app_text_style.dart';
-
-TextEditingController controller = TextEditingController();
+import '../pages/home_page.dart';
 
 class InputTextWidget extends StatelessWidget {
   const InputTextWidget({
@@ -20,7 +19,7 @@ class InputTextWidget extends StatelessWidget {
         hintText: AppTexts.search,
         hintStyle: AppTextStyles.whiteColor30,
       ),
-      controller: controller,
+      controller: isController,
     );
   }
 }
